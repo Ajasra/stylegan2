@@ -132,8 +132,8 @@ def training_loop(
     mirror_augment          = False,    # Enable mirror augment?
     mirror_augment_v        = False,    # Enable mirror augment vertically?
     drange_net              = [-1,1],   # Dynamic range used when feeding image data to the networks.
-    image_snapshot_ticks    = 50,       # How often to save image snapshots? None = only save 'reals.png' and 'fakes-init.png'.
-    network_snapshot_ticks  = 50,       # How often to save network snapshots? None = only save 'networks-final.pkl'.
+    image_snapshot_ticks    = 3,       # How often to save image snapshots? None = only save 'reals.png' and 'fakes-init.png'.
+    network_snapshot_ticks  = 3,       # How often to save network snapshots? None = only save 'networks-final.pkl'.
     save_tf_graph           = False,    # Include full TensorFlow computation graph in the tfevents file?
     save_weight_histograms  = False,    # Include weight histograms in the tfevents file?
     resume_pkl              = 'latest',     # Network pickle to resume training from, None = train from scratch.
