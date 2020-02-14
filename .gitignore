@@ -1,0 +1,7 @@
+
+training/__pycache__/*
+*/__pycache__/*
+dnnlib/tflib/__pycache__/*
+dnnlib/submission/internal/__pycache__/*
+dnnlib/submission/__pycache__/*
+datasets/tattoo_256/tattoo_256-r07.tfrecords
