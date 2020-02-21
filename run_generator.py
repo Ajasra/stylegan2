@@ -26,6 +26,8 @@ def generate_images(network_pkl, seeds, truncation_psi):
     Gs_kwargs.randomize_noise = False
     if truncation_psi is not None:
         Gs_kwargs.truncation_psi = truncation_psi
+        
+    seeds = np.random.randint(low=1, high=999999, size = 100)
 
     for seed_idx, seed in enumerate(seeds):
         print('Generating image for seed %d (%d/%d) ...' % (seed, seed_idx, len(seeds)))
