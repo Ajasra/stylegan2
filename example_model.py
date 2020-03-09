@@ -30,9 +30,12 @@ import pickle
 class TattoModel():
 
     def __init__(self, options):
-        random.seed(options['seed'])
+
+        seeds = np.random.randint(low=1, high=999999, size = 100)
+        random.seed(seeds)
         self.truncation = 1
 
+        print(options['checkpoint'])
         with open(options['checkpoint'], 'rb') as file:
             G, D, self.Gs = pickle.load(file)
         self.noise_vars = [var for name, var in Gs.components.synthesis.vars.items() if name.startswith('noise')]
@@ -43,7 +46,6 @@ class TattoModel():
         if self.truncation is not None:
             self.Gs_kwargs.truncation_psi = self.truncation
         
-    seeds = np.random.randint(low=1, high=999999, size = 100)
 
     # Generate an image based on some text.
     def generate(self, z, truncation):
