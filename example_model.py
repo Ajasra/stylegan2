@@ -25,19 +25,16 @@ import numpy as np
 import PIL.Image as Image
 import dnnlib
 import dnnlib.tflib as tflib
-
-import pretrained_networks
+import pickle
 
 class TattoModel():
 
     def __init__(self, options):
         random.seed(options['seed'])
-        self.truncation = options['truncation']
-        self.seed = options['seed']
+        self.truncation = 1
 
-        self.network_pkl = options['checkpoint']
-
-        _G, _D, self.Gs = pretrained_networks.load_networks(self.network_pkl)
+        with open(options['checkpoint'], 'rb') as file:
+            G, D, self.Gs = pickle.load(file)
         self.noise_vars = [var for name, var in Gs.components.synthesis.vars.items() if name.startswith('noise')]
 
         self.Gs_kwargs = dnnlib.EasyDict()

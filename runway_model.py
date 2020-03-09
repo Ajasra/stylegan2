@@ -3,8 +3,6 @@ from runway.data_types import number, text, image, vector, file
 from example_model import TattoModel
 
 setup_options = {
-    'truncation': number(min=0, max=2, step=.01, default=1, description='trunctation for model.'),
-    'seed': number(min=0, max=1000000, description='A seed used to initialize the model.'),
     'checkpoint': file(extension='.pkl')
 }
 @runway.setup(options=setup_options)
