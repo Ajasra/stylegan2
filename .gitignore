@@ -11,3 +11,4 @@ dnnlib/tflib/_cudacache/*
 dnnlib/tflib/ops/__pycache__/*
 Library/SpoutSDK-35.pyd
 Library/SpoutSDK-37.pyd
+checkpoints/005238.pkl
