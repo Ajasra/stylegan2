@@ -37,7 +37,7 @@ class TattoModel():
 
         self.network_pkl = options['checkpoint']
 
-        _G, _D, self.Gs = pretrained_networks.load_networks(network_pkl)
+        _G, _D, self.Gs = pretrained_networks.load_networks(self.network_pkl)
         self.noise_vars = [var for name, var in Gs.components.synthesis.vars.items() if name.startswith('noise')]
 
         self.Gs_kwargs = dnnlib.EasyDict()
