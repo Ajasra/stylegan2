@@ -31,14 +31,14 @@ class TattoModel():
 
     def __init__(self, options):
 
-        seeds = np.random.randint(low=1, high=999999, size = 100)
+        seeds = np.random.randint(low=1, high=999999)
         random.seed(seeds)
         self.truncation = 1
 
         print(options['checkpoint'])
         with open(options['checkpoint'], 'rb') as file:
             G, D, self.Gs = pickle.load(file)
-        self.noise_vars = [var for name, var in Gs.components.synthesis.vars.items() if name.startswith('noise')]
+        self.noise_vars = [var for name, var in self.Gs.components.synthesis.vars.items() if name.startswith('noise')]
 
         self.Gs_kwargs = dnnlib.EasyDict()
         self.Gs_kwargs.output_transform = dict(func=tflib.convert_images_to_uint8, nchw_to_nhwc=True)
