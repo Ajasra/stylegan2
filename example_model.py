@@ -31,9 +31,11 @@ class TattoModel():
 
     def __init__(self, options):
 
-        seeds = np.random.randint(low=1, high=999999)
+        seeds = random.randint(1, 999999)
         random.seed(seeds)
         self.truncation = 1
+
+        tflib.init_tf()
 
         print(options['checkpoint'])
         with open(options['checkpoint'], 'rb') as file:
