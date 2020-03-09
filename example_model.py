@@ -35,7 +35,7 @@ class TattoModel():
         self.truncation = options['truncation']
         self.seed = options['seed']
 
-        network_pkl = 'network/005238.pkl'
+        self.network_pkl = options['checkpoint']
 
         _G, _D, self.Gs = pretrained_networks.load_networks(network_pkl)
         self.noise_vars = [var for name, var in Gs.components.synthesis.vars.items() if name.startswith('noise')]

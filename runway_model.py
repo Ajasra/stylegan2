@@ -9,8 +9,6 @@ setup_options = {
 }
 @runway.setup(options=setup_options)
 def setup(opts):
-    msg = '[SETUP] Ran with options: seed = {}, truncation = {}'
-    print(msg.format(opts['seed'], opts['truncation']))
     model = TattoModel(opts)
     return model
 
@@ -21,7 +19,7 @@ generate_inputs = {
 
 @runway.command(name='generate',
                 inputs=generate_inputs, outputs={'image': image},
-                description='Generates a red square when the input text input is "red".')
+                description='Generate tattoo based on z-vector')
 def generate(model, args):
 
     output = model.generate(args['z'], args['truncation'])
