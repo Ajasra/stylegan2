@@ -1,0 +1,1 @@
+python TD_listen.py generate-images --network results\512_model.pkl
