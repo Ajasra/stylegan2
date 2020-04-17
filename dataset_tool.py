@@ -713,6 +713,41 @@ def create_from_images_raw(tfrecord_dir, image_dir, shuffle, res_log2=7, resize=
                 tfr.add_image_raw(encoded_jpg)
 # ----------------------------------------------------------------------------
 
+def create_from_images_raw_with_labels(tfrecord_dir, image_dir, shuffle, res_log2=7, labels=5, resize=None):
+    print('Loading images from "%s"' % image_dir)
+    image_filenames = _get_all_files(image_dir)
+    print(f"detected {len(image_filenames)} images ...")
+    if len(image_filenames) == 0:
+        error("No input images found")
+    img = np.asarray(PIL.Image.open(image_filenames[0]))
+    #resolution = img.shape[0]
+    channels = img.shape[2] if img.ndim == 3 else 1
+    
+    if channels not in [1, 3]:
+        error("Input images must be stored as RGB or grayscale")
+    if shuffle:
+        print("Shuffle the images...")
+
+    onehot = np.zeros((len(image_filenames), labels), dtype=np.float32)
+    print(onehot.shape)
+
+    with TFRecordExporter(tfrecord_dir, len(image_filenames)) as tfr:
+        order = (
+            tfr.choose_shuffled_order() if shuffle else np.arange(len(image_filenames))
+        )
+        tfr.create_tfr_writer(img.shape)
+        print("Adding the images to tfrecords ...")
+        for idx in range(order.size):
+            label = image_filenames[order[idx]].split('\\')[2]
+            onehot[idx,int(label)-1] = 1.0
+            if idx % 1000 == 0:
+                print ("added images", idx)
+            with tf.gfile.FastGFile(image_filenames[order[idx]], 'rb') as fid:
+                encoded_jpg = fid.read()
+                tfr.add_image_raw(encoded_jpg)
+        tfr.add_labels(onehot[order])
+# ----------------------------------------------------------------------------
+
 
 def create_from_hdf5(tfrecord_dir, hdf5_filename, shuffle):
     print('Loading HDF5 archive from "%s"' % hdf5_filename)
@@ -897,6 +932,31 @@ def execute_cmdline(argv):
     
     p = add_command(
         "create_from_images_raw",
+        "Create dataset from a directory full of images. Please be careful"
+        "since the tool recursively searches inside every sub-directory for image files",
+        "create_from_images_raw datasets/mydataset myimagedir",
+    )
+    p.add_argument("tfrecord_dir", help="New dataset directory to be created")
+    p.add_argument("image_dir", help="Directory containing the images")
+    p.add_argument(
+        "--resize",
+        help="resize to given power of 2 sized square images (default: None)",
+        type=int,
+        default=None,
+        required=False
+    )
+    p.add_argument(
+        "--shuffle", help="Randomize image order (default: 1)", type=int, default=1
+    )
+    p.add_argument(
+        "--res_log2",
+        help="image width and height should be multiple of 2**res_log2 (default: 7)",
+        type=int,
+        default=7
+    )
+
+    p = add_command(
+        "create_from_images_raw_with_labels",
         "Create dataset from a directory full of images. Please be careful"
         "since the tool recursively searches inside every sub-directory for image files",
         "create_from_images_raw datasets/mydataset myimagedir",

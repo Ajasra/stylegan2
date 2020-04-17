@@ -34,8 +34,8 @@ def msg_to_bytes(msg):
 def generate_images(network_pkl, truncation_psi):
     
     # spout setup
-    width = 512
-    height = 512
+    width = 1024
+    height = 1024
     display = (width,height)
     
     senderName = "outputGAN"
@@ -62,7 +62,7 @@ def generate_images(network_pkl, truncation_psi):
     # create spout receiver
     spoutReceiver = SpoutSDK.SpoutReceiver()
 	# Its signature in c++ looks like this: bool pyCreateReceiver(const char* theName, unsigned int theWidth, unsigned int theHeight, bool bUseActive);
-    spoutReceiver.pyCreateReceiver(receiverName,spoutReceiverWidth,spoutReceiverHeight, False)
+    spoutReceiver.pyCreateReceiver(receiverName,width,height, False)
     # create textures for spout receiver and spout sender 
     textureReceiveID = glGenTextures(1)
         
@@ -74,7 +74,7 @@ def generate_images(network_pkl, truncation_psi):
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 
     # copy data into texture
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, spoutReceiverWidth, spoutReceiverHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, None ) 
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, None ) 
     glBindTexture(GL_TEXTURE_2D, 0)
 
 
@@ -129,20 +129,6 @@ def generate_images(network_pkl, truncation_psi):
                 quit()
         
         #background = False
-        
-        '''
-        d = sock.recvfrom(1024)
-        data = d[0]
-        addr = d[1]
-        
-        reply = data.decode('utf-8')
-        print(reply)
-        
-        if reply == 'Exit':
-            pygame.quit()
-            sock.close()
-            quit()
-        '''
 
         # receive texture
         # Its signature in c++ looks like this: bool pyReceiveTexture(const char* theName, unsigned int theWidth, unsigned int theHeight, GLuint TextureID, GLuint TextureTarget, bool bInvert, GLuint HostFBO);
@@ -159,10 +145,10 @@ def generate_images(network_pkl, truncation_psi):
         # swap width and height data around due to oddness with glGetTextImage. http://permalink.gmane.org/gmane.comp.python.opengl.user/2423
         data.shape = (data.shape[1], data.shape[0], data.shape[2])
 
-        update = data[1,0,0]
+        update = data[0,0,0]
 
-        if update > 200:
-            z = data[0,:,0]
+        if update > 1:
+            z = data[0,:512,0]
             z = z / 255.0 * 7 - 3.5
             z = np.array(z)
             z = np.expand_dims(z, axis=0)
