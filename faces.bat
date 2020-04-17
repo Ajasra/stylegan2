@@ -1,0 +1,1 @@
+python TD_listen.py generate-images --network results\stylegan2-ffhq-config-f.pkl
