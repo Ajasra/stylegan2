@@ -299,3 +299,4 @@ This work is made available under the Nvidia Source Code License-NC. To view a c
 ## Acknowledgements
 
 We thank Ming-Yu Liu for an early review, Timo Viitanen for his help with code release, and Tero Kuosmanen for compute infrastructure.
+"# stylegan2" 
