@@ -738,7 +738,7 @@ def create_from_images_raw_with_labels(tfrecord_dir, image_dir, shuffle, res_log
         tfr.create_tfr_writer(img.shape)
         print("Adding the images to tfrecords ...")
         for idx in range(order.size):
-            label = image_filenames[order[idx]].split('\\')[2]
+            label = image_filenames[order[idx]].split('/')[2]
             onehot[idx,int(label)-1] = 1.0
             if idx % 1000 == 0:
                 print ("added images", idx)
