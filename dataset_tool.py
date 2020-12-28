@@ -713,7 +713,7 @@ def create_from_images_raw(tfrecord_dir, image_dir, shuffle, res_log2=7, resize=
                 tfr.add_image_raw(encoded_jpg)
 # ----------------------------------------------------------------------------
 
-def create_from_images_raw_with_labels(tfrecord_dir, image_dir, shuffle, res_log2=7, labels=5, resize=None):
+def create_from_images_raw_with_labels(tfrecord_dir, image_dir, shuffle, res_log2=7, labels=68, resize=None):
     print('Loading images from "%s"' % image_dir)
     image_filenames = _get_all_files(image_dir)
     print(f"detected {len(image_filenames)} images ...")
